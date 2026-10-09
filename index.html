@@ -117,7 +117,7 @@ dl.facts dd{margin:0}
     </div>
     <div class="contact">
       <span class="lbl">Demander un texte</span>
-      <a class="contact-link" href="https://lilianlloyd.com/pour-se-relier/" target="_blank" rel="noopener">Écrire à l’auteur →</a>
+      <a class="contact-link" href="https://lilianlloyd.com/contact/" target="_blank" rel="noopener">Écrire à l’auteur →</a>
     </div>
   </header>
 
@@ -244,7 +244,7 @@ function computeAges(p){
 
 const EDITION={version:'V4',date:'2026-10-05'};
 (function(){
-let CONTACT='lilianlloyd.com/pour-se-relier';
+let CONTACT='lilianlloyd.com/contact';
 const FAMILLES=["Comédie","Comédie dramatique","Comédie douce-amère","Comédie romantique","Drame & thriller","Fable & conte","Seul-en-scène","Saynètes & recueils","Autres formes"];
 const $=id=>document.getElementById(id);
 const S={fam:new Set(),stat:null,dl:null,open:null};
@@ -272,7 +272,7 @@ const STATS=[
   {k:'all',label:'pièces',test:()=>true},
   {k:'solo',label:'seul·e en scène',test:p=>p.comediens===1},
   {k:'duo',label:'duos',test:p=>p.comediens===2},
-  {k:'big',label:'à 6 comédiens et +',test:p=>p.comediens>=6},
+  {k:'big',label:'6 comédiens et +',test:p=>p.comediens>=6},
   {k:'mod',label:'distribution modulable',test:p=>p.modulable},
 ];
 $('stats').addEventListener('click',e=>{const b=e.target.closest('.stat');if(!b)return;S.stat=(S.stat===b.dataset.k||b.dataset.k==='all')?null:b.dataset.k;render();});
@@ -341,7 +341,7 @@ function openSheet(id){
     ${res?res.split(/\n+/).map(par=>`<p class="res">${esc(par)}</p>`).join(''):''}
     ${(p.personnages||[]).length?`<div><span class="lbl2">Personnages</span><ul>${p.personnages.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`:''}
     <div class="ask"><span class="lbl2">${p.indispo?'Pièce non disponible':'Recevoir le texte'}</span><p>${p.indispo?'Cette pièce est actuellement non disponible pour la création.':'Écrivez à l’auteur en précisant le titre et votre compagnie.'}</p>
-      <a class="contact-link" href="https://lilianlloyd.com/pour-se-relier/" target="_blank" rel="noopener">Écrire à l’auteur →</a></div>`;
+      <a class="contact-link" href="https://lilianlloyd.com/contact/" target="_blank" rel="noopener">Écrire à l’auteur →</a></div>`;
   $('scrim').hidden=false;$('sheet').hidden=false;setTimeout(()=>$('closeSheet').focus(),30);
 }
 function closeSheet(){$('scrim').hidden=true;$('sheet').hidden=true;if(S.open&&S.open.focus)S.open.focus();}
