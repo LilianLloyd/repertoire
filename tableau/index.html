@@ -104,6 +104,18 @@ path.lit{stroke-width:4;opacity:1!important}
 @keyframes gigote{0%,82%,100%{transform:rotate(0) scale(1)}85%{transform:rotate(-7deg) scale(1.12)}88%{transform:rotate(6deg) scale(1.12)}91%{transform:rotate(-4deg) scale(1.08)}94%{transform:rotate(2deg) scale(1.04)}97%{transform:rotate(-1deg) scale(1)}}
 @media (prefers-reduced-motion:no-preference){.btn.cherche{animation:gigote 6s ease-in-out 1.5s infinite}.btn.cherche:hover,.btn.cherche:focus-visible{animation:none;transform:scale(1.08)}}
 @media (max-width:700px){.btn.cherche small{font-size:13px}}
+@media (min-width:701px){.btn.cherche{display:none}}
+/* sur ordinateur : un vrai post-it collé en haut à droite de la feuille, qui se soulève de temps en temps */
+#postit{position:absolute;left:2548px;top:128px;width:300px;height:292px;box-sizing:border-box;padding:34px 26px 20px;z-index:2;
+  background:linear-gradient(180deg,#F3DF7E 0,#F3DF7E 16%,#FBEA8F 16%,#FDF0A6 100%);color:var(--ink);text-decoration:none;
+  transform:rotate(7deg);transform-origin:50% 6%;box-shadow:2px 3px 2px rgba(0,0,0,.18),10px 22px 26px -12px rgba(0,0,0,.55);
+  border-bottom-right-radius:28px 10px;cursor:pointer;display:flex;flex-direction:column;gap:10px}
+#postit::after{content:"";position:absolute;right:0;bottom:0;width:46px;height:30px;background:linear-gradient(135deg,rgba(0,0,0,0) 45%,rgba(0,0,0,.08) 55%,rgba(255,255,255,.35) 100%);border-bottom-right-radius:28px 10px;pointer-events:none}
+#postit b{font-family:var(--f-marker);font-weight:400;font-size:44px;line-height:1.02;color:var(--bordeaux)}
+#postit span{font-family:var(--f-hand);font-weight:500;font-size:31px;line-height:1.1;color:var(--graphite)}
+#postit i{font-family:var(--f-hand);font-style:normal;font-weight:700;font-size:36px;color:var(--bordeaux);margin-top:auto;align-self:flex-end}
+@keyframes decolle{0%,80%,100%{transform:rotate(7deg)}83%{transform:rotate(1deg) translateY(-6px) scale(1.04)}86%{transform:rotate(12deg) scale(1.05)}89%{transform:rotate(3deg)}92%{transform:rotate(9.5deg)}95%{transform:rotate(6deg)}}
+@media (prefers-reduced-motion:no-preference){#postit{animation:decolle 6s ease-in-out 2s infinite;transition:transform .3s}#postit:hover,#postit:focus-visible{animation:none;transform:rotate(4deg) scale(1.07);outline:none}}
 @media (prefers-reduced-motion:reduce){.cell.open .li{animation:none}}
 </style>
 
@@ -115,6 +127,7 @@ path.lit{stroke-width:4;opacity:1!important}
     <canvas id="carve"></canvas>
     <svg id="ink" xmlns="http://www.w3.org/2000/svg"></svg>
     <div id="paper"></div>
+    <a id="postit" href="https://lilianlloyd.github.io/repertoire/"><b>recherche détaillée</b><span>par nombre de comédiens, âge, durée…</span><i>→</i></a>
   </div>
 </div>
 <div id="mob" aria-label="Le répertoire, genre par genre"><div class="sheet" id="sheet"></div></div>
@@ -153,12 +166,12 @@ function wob(x1,y1,x2,y2,amp){const mx=(x1+x2)/2,my=(y1+y2)/2,dx=x2-x1,dy=y2-y1,
 function scribble(w,h){let d=`M-4 ${(h*.55).toFixed(1)}`;let x=-4;while(x<w+4){x+=rr(7,13);d+=` L${x.toFixed(1)} ${(h*.55+rr(-h*.18,h*.18)).toFixed(1)}`}return d}
 /* gravures dans le bois */
 function carve(){const c=$('carve'),S=.5;c.width=W*S;c.height=H*S;c.style.width=W+'px';c.style.height=H+'px';const g=c.getContext('2d');g.scale(S,S);
-  const engrave=(t,x,y,size,rot)=>{g.save();g.translate(x,y);g.rotate(rot);g.font=`700 ${size}px Caveat, "Segoe Print", cursive`;g.lineJoin='round';
-    g.lineWidth=size/8;g.strokeStyle='rgba(18,8,3,.6)';g.strokeText(t,2,2);g.lineWidth=size/15;g.strokeStyle='rgba(225,180,130,.32)';g.strokeText(t,-1.5,-1.5);g.restore()};
+  const engrave=(t,x,y,size,rot,deep)=>{g.save();g.translate(x,y);g.rotate(rot);g.font=`700 ${size}px Caveat, "Segoe Print", cursive`;g.lineJoin='round';
+    const d=deep?1.6:1;g.lineWidth=size/8*d;g.strokeStyle=`rgba(18,8,3,${deep?.82:.6})`;g.strokeText(t,2*d,2*d);g.lineWidth=size/15*d;g.strokeStyle=`rgba(235,190,140,${deep?.5:.32})`;g.strokeText(t,-1.5*d,-1.5*d);g.restore()};
   const cut=(segs,x,y,sc,rot)=>{g.save();g.translate(x,y);g.rotate(rot);g.scale(sc,sc);g.lineCap='round';g.lineJoin='round';
     for(const [col,w,o] of [['rgba(18,8,3,.6)',5,2],['rgba(225,180,130,.3)',2,-1.5]]){g.strokeStyle=col;g.lineWidth=w/sc;g.beginPath();segs.forEach(s=>s.forEach(([px,py],i)=>i?g.lineTo(px+o,py+o):g.moveTo(px+o,py+o)));g.stroke()}g.restore()};
   engrave('acte III ?',1050,150,64,-.06);engrave('pourquoi ?',2280,140,58,.05);engrave('ça tient pas',2700,560,58,.18);engrave('FIN',2930,880,84,-.25);
-  engrave('pas encore mort',1180,1880,66,-.03);engrave('relire',620,1860,56,.08);engrave('L.L.',230,1470,80,.22);engrave('encore une',2620,1880,52,-.1);
+  engrave('pas encore mort',1180,1880,66,-.03);engrave('relire',620,1860,56,.08);engrave('L.L.',190,1480,150,.18,1);engrave('encore une',2620,1880,52,-.1);
   const tally=[];for(let k=0;k<4;k++){for(let i=0;i<4;i++)tally.push([[k*80+i*14,0],[k*80+i*14+4,54]]);tally.push([[k*80-8,36],[k*80+56,14]]);}cut(tally,1950,1830,1,-.04);
   cut([[[0,-20],[-24,-40],[-44,-18],[0,24],[44,-18],[24,-40],[0,-20]]],330,1750,1.4,.2);
   cut([[[0,0],[13,-38],[26,0],[-15,-23],[41,-23],[0,0]]],3020,1830,1.5,.1);
@@ -239,6 +252,7 @@ function openCell(name){const c=cells[name];mode='cell';document.body.classList.
   c.el.querySelectorAll('.li').forEach(a=>a.tabIndex=0);}
 function syncMode(){if(mode==='cell'&&target.s<overviewScale()*1.15){mode='overview';document.body.classList.add('ov');document.querySelectorAll('.cell').forEach(c=>c.classList.add('ov'));$('back').hidden=true}else if(mode==='overview'&&target.s>overviewScale()*1.6){mode='free';document.body.classList.remove('ov');document.querySelectorAll('.cell').forEach(x=>{x.classList.remove('ov');x.classList.add('open')});$('back').hidden=false}}
 $('back').addEventListener('click',overview);
+$('postit').addEventListener('click',e=>{if(moved>6)e.preventDefault()});
 const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
 let dragging=false,moved=0,last=null,pinch=null,vel={x:0,y:0},lastTr='';const pts=new Map();
 function tick(){if(!dragging&&(Math.abs(vel.x)+Math.abs(vel.y))>.3){target.x+=vel.x;target.y+=vel.y;vel.x*=.92;vel.y*=.92;clampCam(target)}
