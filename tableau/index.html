@@ -98,6 +98,12 @@ path.lit{stroke-width:4;opacity:1!important}
   #card{left:12px!important;right:12px;top:auto!important;bottom:calc(12px + env(safe-area-inset-bottom,0px));width:auto}
   #hint{display:none}
 }
+/* « Recherche détaillée » : un post-it qui gigote toutes les six secondes pour qu'on le remarque */
+.btn.cherche{background:#F7E9A8;display:flex;flex-direction:column;align-items:center;line-height:1.1;padding:5px 14px 6px}
+.btn.cherche small{font-weight:500;font-size:15px;color:var(--graphite)}
+@keyframes gigote{0%,82%,100%{transform:rotate(0) scale(1)}85%{transform:rotate(-7deg) scale(1.12)}88%{transform:rotate(6deg) scale(1.12)}91%{transform:rotate(-4deg) scale(1.08)}94%{transform:rotate(2deg) scale(1.04)}97%{transform:rotate(-1deg) scale(1)}}
+@media (prefers-reduced-motion:no-preference){.btn.cherche{animation:gigote 6s ease-in-out 1.5s infinite}.btn.cherche:hover,.btn.cherche:focus-visible{animation:none;transform:scale(1.08)}}
+@media (max-width:700px){.btn.cherche small{font-size:13px}}
 @media (prefers-reduced-motion:reduce){.cell.open .li{animation:none}}
 </style>
 
@@ -114,7 +120,7 @@ path.lit{stroke-width:4;opacity:1!important}
 <div id="mob" aria-label="Le répertoire, genre par genre"><div class="sheet" id="sheet"></div></div>
 <div class="hud" id="head"><div class="n">le répertoire sur mon bureau</div><div class="s2"><b id="nb">99</b> pièces, servez-vous</div></div>
 <nav class="hud" id="tools" aria-label="Navigation">
-  <a class="btn" href="https://lilianlloyd.github.io/repertoire/">Recherche détaillée</a>
+  <a class="btn cherche" href="https://lilianlloyd.github.io/repertoire/">Recherche détaillée<small>par nombre de comédiens, âge, durée…</small></a>
   <a class="btn pri" href="https://lilianlloyd.com/repertoire/">Retour au site</a>
 </nav>
 <button class="hud btn" id="back" type="button" hidden>← retour à la feuille</button>
