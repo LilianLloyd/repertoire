@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>L'écran sur mon bureau · Lilian Lloyd</title>
+<meta name="description" content="Extraits vidéo des pièces de Lilian Lloyd, auteur de théâtre contemporain : Comme un père, Suivant les pointillés, On s'ennuiera plus tard.">
+<meta property="og:title" content="L'écran sur mon bureau · Lilian Lloyd">
+<meta property="og:description" content="Des extraits de mes pièces, approchez.">
+<meta property="og:image" content="https://lilianlloyd.github.io/repertoire/ecran/bureau-ecran.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Permanent+Marker&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* La photo du bureau en plein cadre ; l'écran et l'écriture des post-it sont des calques posés aux coordonnées exactes de la photo (1376 × 768) ; la vidéo se lance dans l'écran, ou en grand en bas sur téléphone. */
+:root{
+  --ink:#24211F; --bordeaux:#7A1F2B; --paper:#FBF8F1; --postit:#EFE38A;
+  --room:#2A221D; --glass:#0C0B0B;
+  --f-marker:"Permanent Marker","Comic Sans MS",cursive;
+  --f-hand:"Caveat","Segoe Print","Bradley Hand",cursive;
+  --f-text:"Cormorant Garamond",Georgia,"Times New Roman",serif;
+  --f-sys:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--room);color:var(--paper);font-family:var(--f-text);font-size:17px;line-height:1.5;padding-top:env(safe-area-inset-top,0px)}
+.wrap{max-width:1200px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:18px 40px;display:grid;gap:22px}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--postit);outline-offset:3px}
+
+.head{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;justify-content:space-between}
+.tag{background:var(--postit);color:var(--ink);padding:10px 16px 12px;transform:rotate(-2deg);box-shadow:0 10px 18px -8px rgba(0,0,0,.6)}
+.tag h1{font-family:var(--f-marker);font-weight:400;color:var(--bordeaux);font-size:clamp(19px,3vw,25px);line-height:1.1;margin:0}
+.tag p{font-family:var(--f-hand);font-size:20px;margin:0}
+.nav{display:flex;flex-wrap:wrap;gap:6px 22px}
+.nav a{font-family:var(--f-hand);font-size:21px;color:var(--paper);text-decoration:none;border-bottom:1.5px solid rgba(251,248,241,.45)}
+.nav a:hover{border-bottom-color:var(--postit)}
+
+.scene{position:relative;container-type:inline-size;aspect-ratio:1376/768;width:100%;border-radius:4px;overflow:hidden;box-shadow:0 30px 60px -25px rgba(0,0,0,.8);
+  background:#3a2c22 url("bureau-ecran.jpg") center/cover no-repeat}
+.screen{position:absolute;left:26.15%;top:8.35%;width:47.55%;height:50.9%;background:var(--glass);overflow:hidden;
+  clip-path:polygon(0 0,85.8% 0,85.8% 21%,100% 21%,100% 100%,0 100%);
+  box-shadow:inset 0 0 3cqw rgba(255,240,220,.05)}
+.desk-ui{position:absolute;inset:0;padding:2.2cqw 2cqw 1.6cqw;display:grid;grid-template-rows:auto 1fr auto;gap:1.2cqw}
+.desk-ui .lbl{font-family:var(--f-hand);font-size:2.2cqw;color:#e9e1d3;line-height:1}
+.files{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.3cqw;align-content:center}
+.file{background:none;border:0;padding:0;text-align:left;display:grid;gap:.6cqw;color:#efe8dc}
+.thumb{aspect-ratio:16/9;background:#1a1817 center/cover no-repeat;border:1px solid #3a3634;border-radius:.4cqw;display:grid;place-items:center;position:relative;transition:transform .2s,border-color .2s;filter:saturate(.85)}
+.file:hover .thumb,.file:focus-visible .thumb{transform:translateY(-.3cqw);border-color:var(--bordeaux)}
+.thumb i{width:3.2cqw;height:3.2cqw;border-radius:50%;background:var(--bordeaux);display:grid;place-items:center;box-shadow:0 .2cqw .6cqw rgba(0,0,0,.5)}
+.thumb i::before{content:"";border-left:1.1cqw solid var(--paper);border-top:.7cqw solid transparent;border-bottom:.7cqw solid transparent;margin-left:.25cqw}
+.thumb em{position:absolute;right:.4cqw;bottom:.3cqw;font-style:normal;font-family:var(--f-sys);font-size:.85cqw;background:rgba(0,0,0,.65);padding:0 .3cqw}
+.file b{font-family:var(--f-marker);font-weight:400;font-size:1.25cqw;line-height:1.15}
+.file small{font-family:var(--f-sys);font-size:.8cqw;color:#a8a097}
+.desk-ui .foot{font-family:var(--f-sys);font-size:.85cqw;color:#8d857c}
+
+.player{position:absolute;inset:0;background:var(--glass);display:grid;grid-template-rows:1fr auto;animation:on .35s ease-out}
+.player[hidden]{display:none}
+@keyframes on{from{opacity:0;filter:brightness(2.5)}to{opacity:1;filter:none}}
+.video{position:relative;background:#000}
+.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.close{position:absolute;left:1cqw;top:1cqw;z-index:2;background:rgba(0,0,0,.65);border:1px solid #4a4542;border-radius:.4cqw;font-family:var(--f-sys);font-size:.95cqw;padding:.3cqw .8cqw;color:#e9e1d3}
+.meta{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.2cqw 1.6cqw;align-items:end;padding:1cqw 1.6cqw 1.2cqw;background:#121110;border-top:1px solid #2a2725}
+.meta h2{font-family:var(--f-marker);font-weight:400;font-size:1.9cqw;line-height:1.05;margin:0;color:var(--paper)}
+.meta p{grid-column:1;margin:0;font-family:var(--f-sys);font-size:.85cqw;color:#b8afa4}
+.meta a{grid-column:2;grid-row:1/3;font-family:var(--f-hand);font-size:1.9cqw;color:var(--postit);text-decoration:none;border-bottom:1.5px solid currentColor;white-space:nowrap;line-height:1.1}
+
+.pi{position:absolute;display:grid;place-items:center;align-content:center;text-align:center;font-family:var(--f-hand);font-weight:500;line-height:.95;
+  color:#2E3352;opacity:.62;mix-blend-mode:multiply;filter:blur(.35px);pointer-events:none;z-index:3}
+.pi1{left:67.6%;top:8.4%;width:5.7%;height:9.2%;font-size:1.32cqw;transform:rotate(-3deg)}
+.pi2{left:27.75%;top:59.4%;width:5.4%;height:9.4%;font-size:1.36cqw;transform:rotate(-4deg);padding-right:.3cqw}
+.pi span{display:block}
+.pi span:nth-child(2){transform:translateX(.25cqw) rotate(1.5deg)}
+.fold{position:absolute;left:31.6%;top:65.6%;width:1.75%;height:3.3%;z-index:4;pointer-events:none;
+  background:linear-gradient(135deg,transparent 49%,#C9B571 50%,#D9C88A 72%,#E6D8A0 100%);
+  filter:drop-shadow(-.12cqw -.12cqw .2cqw rgba(60,45,15,.45));transform:rotate(-2deg)}
+
+.sig{font-family:var(--f-hand);font-size:19px;color:#b8afa4;margin:0;text-align:right}
+.sig a{color:inherit}
+
+/* téléphone : l'écran de la photo est trop petit, la vidéo s'ouvre en grand en bas */
+@media (max-width:700px){
+  .player{position:fixed;inset:auto 0 0 0;z-index:20;padding-bottom:env(safe-area-inset-bottom,0px);grid-template-rows:auto auto;border-top:3px solid var(--bordeaux);container-type:inline-size;box-shadow:0 -20px 40px rgba(0,0,0,.6)}
+  .video{aspect-ratio:16/9}
+  .close{font-size:3.4cqw;padding:1cqw 2.4cqw;left:auto;right:2cqw;top:auto;bottom:calc(100% + 2cqw);background:var(--bordeaux);border-color:var(--bordeaux)}
+  .meta{padding:3cqw 4cqw 4cqw}
+  .meta h2{font-size:6cqw}.meta p{font-size:3.2cqw}.meta a{font-size:6cqw}
+  .file b{font-size:1.6cqw}
+}
+@media (prefers-reduced-motion:reduce){.player{animation:none}.thumb{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <div class="tag"><h1>L'écran sur mon bureau</h1><p>des extraits, approchez</p></div>
+    <nav class="nav">
+      <a href="../tableau/">Le répertoire sur mon bureau</a>
+      <a href="https://lilianlloyd.com/">Retour au site</a>
+    </nav>
+  </div>
+
+  <div class="scene" role="group" aria-label="Le bureau de Lilian Lloyd, avec l'écran des extraits">
+    <div class="screen">
+      <div class="desk-ui">
+        <span class="lbl">Extraits</span>
+        <div class="files" id="files"></div>
+        <span class="foot" id="count"></span>
+      </div>
+      <div class="player" id="player" hidden role="dialog" aria-labelledby="ptitle">
+        <div class="video" id="video">
+          <button class="close" id="close" type="button">× fermer</button>
+        </div>
+        <div class="meta">
+          <h2 id="ptitle"></h2>
+          <p id="pinfo"></p>
+          <a id="plink" href="#" target="_top">Lire la fiche →</a>
+        </div>
+      </div>
+    </div>
+    <div class="pi pi1" aria-hidden="true"><span>3 pour</span><span>commencer</span></div>
+    <div class="pi pi2" aria-hidden="true"><span>travail</span><span>en cours</span></div>
+    <div class="fold" aria-hidden="true"></div>
+  </div>
+
+  <p class="sig">Lilian Lloyd, auteur de théâtre contemporain (pas encore mort) · <a href="https://lilianlloyd.com/">lilianlloyd.com</a></p>
+</div>
+
+<script>
+/* Pour ajouter un extrait : une ligne de plus ici (yt = identifiant de la vidéo YouTube, id = fin de l'adresse de la fiche). */
+const CLIPS=[
+ {id:"comme-un-pere",yt:"uhxkLUoiirg",title:"Comme un père",kind:"extrait",len:"2:36",info:"Extrait · Théâtre Michel Humbert, Langres"},
+ {id:"suivant-les-pointilles",yt:"uLoR8KDV7mA",title:"Suivant les pointillés",kind:"extrait",len:"2:14",info:"« Le poème » · Cie les Lilas, mise en scène Lilian Lloyd"},
+ {id:"on-s-ennuiera-plus-tard",yt:"EyjlkgDv_1I",title:"On s'ennuiera plus tard",kind:"teaser",len:"1:01",info:"Teaser · avec Didier Blau, Gabrielle Mouhanna, Pascal Lacoste"}
+];
+const $=id=>document.getElementById(id);
+$("count").textContent=CLIPS.length+" fichiers · cliquez pour regarder";
+CLIPS.forEach((c,i)=>{
+  const b=document.createElement("button");b.type="button";b.className="file";b.id="f-"+c.id;
+  b.innerHTML=`<span class="thumb" style="background-image:url('https://i.ytimg.com/vi/${c.yt}/mqdefault.jpg')"><i></i><em>${c.len}</em></span><b>${c.title}</b><small>${c.kind}.mov</small>`;
+  b.addEventListener("click",()=>openClip(i,true));
+  $("files").appendChild(b);
+});
+let last=null;
+function openClip(i,autoplay){
+  const c=CLIPS[i];last=$("f-"+c.id);
+  $("ptitle").textContent=c.title;$("pinfo").textContent=c.info;
+  $("plink").href="https://lilianlloyd.com/repertoire/"+c.id+"/";
+  const old=$("video").querySelector("iframe");if(old)old.remove();
+  const f=document.createElement("iframe");
+  f.src=`https://www.youtube-nocookie.com/embed/${c.yt}?rel=0&playsinline=1${autoplay?"&autoplay=1":""}`;
+  f.title=c.title+" · "+c.kind;
+  f.allow="autoplay; encrypted-media; picture-in-picture; fullscreen";
+  f.allowFullscreen=true;
+  $("video").appendChild(f);
+  $("player").hidden=false;
+  try{history.replaceState(null,"","#"+c.id)}catch(e){}
+}
+function shut(){
+  const f=$("video").querySelector("iframe");if(f)f.remove();
+  $("player").hidden=true;
+  try{history.replaceState(null,"",location.pathname)}catch(e){}
+  if(last)last.focus();
+}
+$("close").addEventListener("click",shut);
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("player").hidden)shut()});
+/* lien direct depuis la page d'une pièce : .../ecran/#comme-un-pere */
+const k=CLIPS.findIndex(c=>c.id===(location.hash||"").slice(1));if(k>-1)openClip(k,false);
+</script>
+</body>
+</html>
