@@ -95,9 +95,13 @@ body.zoom .scene{z-index:10}
 .tbar a{font-family:var(--f-hand);font-size:clamp(19px,2vw,24px);color:var(--postit);text-decoration:none;border-bottom:1.5px solid currentColor;white-space:nowrap;line-height:1.1}
 .tbtn[hidden]{display:none}
 
+.theater.compact{grid-template-rows:auto auto}
+.theater.compact .video{aspect-ratio:16/9}
 @media (max-width:700px){
   .file b{font-size:1.6cqw}
-  .tbar{padding:10px 12px 12px;gap:8px 12px}
+  .tbar{padding:10px 12px 12px;gap:8px 10px}
+  .tbar .txt{flex-basis:100%;order:-1}
+  .tbtn{font-size:12px;padding:6px 10px}
 }
 @media (prefers-reduced-motion:reduce){:root{--travel:0s}.thumb,.still,.theater{transition:none}}
 </style>
@@ -177,7 +181,12 @@ function geometry(){
     box:{left:(vw-w)/2,top:(vh-h)/2,width:w,height:h}
   };
 }
-function placeTheater(b){Object.assign(theater.style,{left:b.left+"px",top:b.top+"px",width:b.width+"px",height:b.height+"px"})}
+function placeTheater(b){
+  /* sur téléphone l'écran agrandi est trop bas pour loger la vidéo et la barre : la vidéo prend la largeur, la barre se pose dessous */
+  const compact=document.documentElement.clientWidth<700;
+  theater.classList.toggle("compact",compact);
+  Object.assign(theater.style,{left:b.left+"px",top:b.top+"px",width:b.width+"px",height:compact?"auto":b.height+"px"});
+}
 
 let current=-1,last=null,timer=null;
 function openClip(i,animate,autoplay){
