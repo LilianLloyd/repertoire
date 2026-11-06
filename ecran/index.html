@@ -12,7 +12,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Permanent+Marker&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
-/* La photo du bureau en plein cadre ; l'écran et l'écriture des post-it sont des calques posés aux coordonnées exactes de la photo (1376 × 768) ; la vidéo se lance dans l'écran, ou en grand en bas sur téléphone. */
+/* La photo du bureau en plein cadre ; l'écran et l'écriture des post-it sont des calques posés aux coordonnées exactes de la photo (1376 × 768).
+   Au clic sur un extrait, la caméra avance vers l'écran jusqu'à ce qu'il remplisse la fenêtre, puis la vidéo s'ouvre en grand ; « reculer » fait le chemin inverse. */
 :root{
   --ink:#24211F; --bordeaux:#7A1F2B; --paper:#FBF8F1; --postit:#EFE38A;
   --room:#2A221D; --glass:#0C0B0B;
@@ -20,6 +21,7 @@
   --f-hand:"Caveat","Segoe Print","Bradley Hand",cursive;
   --f-text:"Cormorant Garamond",Georgia,"Times New Roman",serif;
   --f-sys:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --travel:1.15s;
   color-scheme:light;
 }
 *{box-sizing:border-box}
@@ -38,7 +40,8 @@ button{font:inherit;color:inherit;cursor:pointer}
 .nav a:hover{border-bottom-color:var(--postit)}
 
 .scene{position:relative;container-type:inline-size;aspect-ratio:1376/768;width:100%;border-radius:4px;overflow:hidden;box-shadow:0 30px 60px -25px rgba(0,0,0,.8);
-  background:#3a2c22 url("bureau-ecran.jpg") center/cover no-repeat}
+  background:#3a2c22 url("bureau-ecran.jpg") center/cover no-repeat;
+  transition:transform var(--travel) cubic-bezier(.62,0,.24,1);will-change:transform}
 .screen{position:absolute;left:26.15%;top:8.35%;width:47.55%;height:50.9%;background:var(--glass);overflow:hidden;
   clip-path:polygon(0 0,85.8% 0,85.8% 21%,100% 21%,100% 100%,0 100%);
   box-shadow:inset 0 0 3cqw rgba(255,240,220,.05)}
@@ -54,18 +57,9 @@ button{font:inherit;color:inherit;cursor:pointer}
 .file b{font-family:var(--f-marker);font-weight:400;font-size:1.25cqw;line-height:1.15}
 .file small{font-family:var(--f-sys);font-size:.8cqw;color:#a8a097}
 .desk-ui .foot{font-family:var(--f-sys);font-size:.85cqw;color:#8d857c}
-
-.player{position:absolute;inset:0;background:var(--glass);display:grid;grid-template-rows:1fr auto;animation:on .35s ease-out}
-.player[hidden]{display:none}
-.screen.playing .desk-ui{visibility:hidden}
-@keyframes on{from{filter:brightness(2.2)}to{filter:none}}
-.video{position:relative;background:#000}
-.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-.close{grid-column:1;grid-row:1/3;align-self:center;background:rgba(0,0,0,.65);border:1px solid #4a4542;border-radius:.4cqw;font-family:var(--f-sys);font-size:.95cqw;padding:.3cqw .8cqw;color:#e9e1d3}
-.meta{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:.2cqw 1.6cqw;align-items:end;padding:1cqw 1.6cqw 1.2cqw;background:#121110;border-top:1px solid #2a2725}
-.meta h2{grid-column:2;font-family:var(--f-marker);font-weight:400;font-size:1.9cqw;line-height:1.05;margin:0;color:var(--paper)}
-.meta p{grid-column:2;margin:0;font-family:var(--f-sys);font-size:.85cqw;color:#b8afa4}
-.meta a{grid-column:3;grid-row:1/3;font-family:var(--f-hand);font-size:1.9cqw;color:var(--postit);text-decoration:none;border-bottom:1.5px solid currentColor;white-space:nowrap;line-height:1.1}
+/* l'image de l'extrait choisi, qui remplit l'écran pendant que la caméra avance */
+.still{position:absolute;inset:0;background:#000 center/cover no-repeat;opacity:0;transition:opacity .45s ease}
+.screen.focus .still{opacity:1}
 
 .pi{position:absolute;display:grid;place-items:center;align-content:center;text-align:center;font-family:var(--f-hand);font-weight:500;line-height:.95;
   color:#2E3352;opacity:.62;mix-blend-mode:multiply;filter:blur(.35px);pointer-events:none;z-index:3}
@@ -80,17 +74,32 @@ button{font:inherit;color:inherit;cursor:pointer}
 .sig{font-family:var(--f-hand);font-size:19px;color:#b8afa4;margin:0;text-align:right}
 .sig a{color:inherit}
 
-/* téléphone : l'écran de la photo est trop petit, la vidéo s'ouvre en grand en bas */
+/* le travelling : la pièce s'assombrit, le bureau grossit vers l'écran */
+.veil{position:fixed;inset:0;background:#0b0a09;opacity:0;pointer-events:none;transition:opacity calc(var(--travel) * .8) ease;z-index:9}
+body.zoom{overflow:hidden}
+body.zoom .veil{opacity:1}
+body.zoom .scene{z-index:10}
+
+/* la salle de projection : posée exactement sur l'écran agrandi, la vidéo y joue en pleine résolution */
+.theater{position:fixed;z-index:30;background:var(--glass);display:grid;grid-template-rows:minmax(0,1fr) auto;opacity:0;transition:opacity .35s ease}
+.theater[hidden]{display:none}
+.theater.on{opacity:1}
+.theater .video{position:relative;background:#000}
+.theater .video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.tbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;padding:12px 18px 14px;background:#121110;border-top:1px solid #2a2725}
+.tbar .txt{flex:1 1 240px;min-width:0}
+.tbar h2{font-family:var(--f-marker);font-weight:400;font-size:clamp(18px,2.2vw,28px);line-height:1.05;margin:0;color:var(--paper)}
+.tbar p{margin:3px 0 0;font-family:var(--f-sys);font-size:12px;color:#b8afa4}
+.tbtn{background:none;border:1px solid #4a4542;border-radius:3px;font-family:var(--f-sys);font-size:13px;padding:7px 12px;color:#e9e1d3;white-space:nowrap}
+.tbtn:hover{border-color:var(--postit);color:var(--postit)}
+.tbar a{font-family:var(--f-hand);font-size:clamp(19px,2vw,24px);color:var(--postit);text-decoration:none;border-bottom:1.5px solid currentColor;white-space:nowrap;line-height:1.1}
+.tbtn[hidden]{display:none}
+
 @media (max-width:700px){
-  .player{position:fixed;inset:auto 0 0 0;z-index:20;padding-bottom:env(safe-area-inset-bottom,0px);grid-template-rows:auto auto;border-top:3px solid var(--bordeaux);container-type:inline-size;box-shadow:0 -20px 40px rgba(0,0,0,.6)}
-  .video{aspect-ratio:16/9}
-  .meta{grid-template-columns:minmax(0,1fr) auto}.meta h2,.meta p{grid-column:1}.meta a{grid-column:2}
-  .close{position:absolute;font-size:3.4cqw;padding:1cqw 2.4cqw;right:2cqw;bottom:calc(100% + 56.25vw + 2cqw);background:var(--bordeaux);border-color:var(--bordeaux)}
-  .meta{padding:3cqw 4cqw 4cqw}
-  .meta h2{font-size:6cqw}.meta p{font-size:3.2cqw}.meta a{font-size:6cqw}
   .file b{font-size:1.6cqw}
+  .tbar{padding:10px 12px 12px;gap:8px 12px}
 }
-@media (prefers-reduced-motion:reduce){.player{animation:none}.thumb{transition:none}}
+@media (prefers-reduced-motion:reduce){:root{--travel:0s}.thumb,.still,.theater{transition:none}}
 </style>
 </head>
 <body>
@@ -103,22 +112,14 @@ button{font:inherit;color:inherit;cursor:pointer}
     </nav>
   </div>
 
-  <div class="scene" role="group" aria-label="Le bureau de Lilian Lloyd, avec l'écran des extraits">
-    <div class="screen">
+  <div class="scene" id="scene" role="group" aria-label="Le bureau de Lilian Lloyd, avec l'écran des extraits">
+    <div class="screen" id="screen">
       <div class="desk-ui">
         <span class="lbl">Extraits</span>
         <div class="files" id="files"></div>
         <span class="foot" id="count"></span>
       </div>
-      <div class="player" id="player" hidden role="dialog" aria-labelledby="ptitle">
-        <div class="video" id="video"></div>
-        <div class="meta">
-          <button class="close" id="close" type="button">× fermer</button>
-          <h2 id="ptitle"></h2>
-          <p id="pinfo"></p>
-          <a id="plink" href="#" target="_top">Lire la fiche →</a>
-        </div>
-      </div>
+      <div class="still" id="still" aria-hidden="true"></div>
     </div>
     <div class="pi pi1" aria-hidden="true"><span>3 pour</span><span>commencer</span></div>
     <div class="pi pi2" aria-hidden="true"><span>travail</span><span>en cours</span></div>
@@ -126,6 +127,18 @@ button{font:inherit;color:inherit;cursor:pointer}
   </div>
 
   <p class="sig">Lilian Lloyd, auteur de théâtre contemporain (pas encore mort) · <a href="https://lilianlloyd.com/">lilianlloyd.com</a></p>
+</div>
+
+<div class="veil" aria-hidden="true"></div>
+
+<div class="theater" id="theater" hidden role="dialog" aria-modal="true" aria-labelledby="ptitle">
+  <div class="video" id="video"></div>
+  <div class="tbar">
+    <button class="tbtn" id="close" type="button">← reculer</button>
+    <div class="txt"><h2 id="ptitle"></h2><p id="pinfo"></p></div>
+    <button class="tbtn" id="full" type="button">plein écran</button>
+    <a id="plink" href="#" target="_top">Lire la fiche →</a>
+  </div>
 </div>
 
 <script>
@@ -136,16 +149,51 @@ const CLIPS=[
  {id:"on-s-ennuiera-plus-tard",yt:"EyjlkgDv_1I",title:"On s'ennuiera plus tard",kind:"teaser",len:"1:01",info:"Teaser · avec Didier Blau, Gabrielle Mouhanna, Pascal Lacoste"}
 ];
 const $=id=>document.getElementById(id);
+const scene=$("scene"), screenEl=$("screen"), theater=$("theater");
+const TRAVEL=matchMedia("(prefers-reduced-motion: reduce)").matches?0:1150;
+
 $("count").textContent=CLIPS.length+" fichiers · cliquez pour regarder";
 CLIPS.forEach((c,i)=>{
   const b=document.createElement("button");b.type="button";b.className="file";b.id="f-"+c.id;
   b.innerHTML=`<span class="thumb" style="background-image:url('https://i.ytimg.com/vi/${c.yt}/mqdefault.jpg')"><i></i><em>${c.len}</em></span><b>${c.title}</b><small>${c.kind}.mov</small>`;
-  b.addEventListener("click",()=>openClip(i,true));
+  b.addEventListener("click",()=>openClip(i,true,true));
   $("files").appendChild(b);
 });
-let last=null;
-function openClip(i,autoplay){
-  const c=CLIPS[i];last=$("f-"+c.id);
+
+/* Où placer la caméra pour que l'écran remplisse la fenêtre */
+function geometry(){
+  const prev=scene.style.transition, prevT=scene.style.transform;
+  scene.style.transition="none";scene.style.transform="none";
+  const r=scene.getBoundingClientRect(), s=screenEl.getBoundingClientRect();
+  scene.style.transform=prevT;void scene.offsetWidth;scene.style.transition=prev;
+  const vw=document.documentElement.clientWidth, vh=window.innerHeight;
+  const m=vw<700?8:28;
+  const k=Math.min((vw-2*m)/s.width,(vh-2*m)/s.height);
+  const cx=s.left+s.width/2, cy=s.top+s.height/2;
+  const w=s.width*k, h=s.height*k;
+  return {
+    origin:`${cx-r.left}px ${cy-r.top}px`,
+    transform:`translate(${vw/2-cx}px,${vh/2-cy}px) scale(${k})`,
+    box:{left:(vw-w)/2,top:(vh-h)/2,width:w,height:h}
+  };
+}
+function placeTheater(b){Object.assign(theater.style,{left:b.left+"px",top:b.top+"px",width:b.width+"px",height:b.height+"px"})}
+
+let current=-1,last=null,timer=null;
+function openClip(i,animate,autoplay){
+  const c=CLIPS[i];current=i;last=$("f-"+c.id);
+  clearTimeout(timer);
+  $("still").style.backgroundImage=`url('https://i.ytimg.com/vi/${c.yt}/hqdefault.jpg')`;
+  screenEl.classList.add("focus");
+  document.body.classList.add("zoom");
+  const g=geometry();
+  if(!animate||!TRAVEL)scene.style.transition="none";
+  scene.style.transformOrigin=g.origin;
+  requestAnimationFrame(()=>{scene.style.transform=g.transform;});
+  timer=setTimeout(()=>{scene.style.transition="";showTheater(c,g.box,autoplay)},animate?TRAVEL+40:30);
+  try{history.replaceState(null,"","#"+c.id)}catch(e){}
+}
+function showTheater(c,box,autoplay){
   $("ptitle").textContent=c.title;$("pinfo").textContent=c.info;
   $("plink").href="https://lilianlloyd.com/repertoire/"+c.id+"/";
   const old=$("video").querySelector("iframe");if(old)old.remove();
@@ -155,19 +203,43 @@ function openClip(i,autoplay){
   f.allow="autoplay; encrypted-media; picture-in-picture; fullscreen";
   f.allowFullscreen=true;
   $("video").appendChild(f);
-  $("player").hidden=false;document.querySelector(".screen").classList.add("playing");
-  try{history.replaceState(null,"","#"+c.id)}catch(e){}
+  placeTheater(box);
+  theater.hidden=false;
+  requestAnimationFrame(()=>theater.classList.add("on"));
+  $("close").focus({preventScroll:true});
 }
 function shut(){
-  const f=$("video").querySelector("iframe");if(f)f.remove();
-  $("player").hidden=true;document.querySelector(".screen").classList.remove("playing");
+  if(current<0)return;
+  current=-1;clearTimeout(timer);
+  theater.classList.remove("on");
+  setTimeout(()=>{theater.hidden=true;const f=$("video").querySelector("iframe");if(f)f.remove();},TRAVEL?300:0);
+  scene.style.transform="";
+  setTimeout(()=>{document.body.classList.remove("zoom");screenEl.classList.remove("focus");},TRAVEL?TRAVEL*.75:0);
   try{history.replaceState(null,"",location.pathname)}catch(e){}
-  if(last)last.focus();
+  if(last)setTimeout(()=>last.focus({preventScroll:true}),TRAVEL);
 }
 $("close").addEventListener("click",shut);
-document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("player").hidden)shut()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&current>-1)shut()});
+
+/* plein écran (masqué là où le navigateur ne le permet pas) */
+const canFull=document.fullscreenEnabled||document.webkitFullscreenEnabled;
+if(!canFull)$("full").hidden=true;
+$("full").addEventListener("click",()=>{
+  const f=$("video").querySelector("iframe");if(!f)return;
+  (f.requestFullscreen||f.webkitRequestFullscreen).call(f);
+});
+
+/* si la fenêtre change de taille pendant la projection, on recadre */
+addEventListener("resize",()=>{
+  if(current<0)return;
+  scene.style.transition="none";
+  const g=geometry();scene.style.transformOrigin=g.origin;scene.style.transform=g.transform;placeTheater(g.box);
+  void scene.offsetWidth;scene.style.transition="";
+});
+
 /* lien direct depuis la page d'une pièce : .../ecran/#comme-un-pere */
-const k=CLIPS.findIndex(c=>c.id===(location.hash||"").slice(1));if(k>-1)openClip(k,false);
+const k=CLIPS.findIndex(c=>c.id===(location.hash||"").slice(1));
+if(k>-1)addEventListener("load",()=>openClip(k,false,false));
 </script>
 </body>
 </html>
