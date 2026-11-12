@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Où voir du Lloyd ? Lilian Lloyd</title>
+<meta name="description" content="Toutes les dates à venir des pièces de Lilian Lloyd, jouées par des troupes partout en France.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --ground:#F5EEE2;--surface:#FCF8F1;--ink:#1C1A1A;--muted:#5E5650;--line:#DFD3C2;
+  --accent:#7A1F2B;--accent-dark:#4F121A;--accent-soft:#F1DEDB;
+  --serif:"Cormorant Garamond","Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  --sans:"Instrument Sans",-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--ground);color:var(--ink)}
+body{font-family:var(--serif);-webkit-font-smoothing:antialiased}
+a{color:var(--accent)}a:hover{color:var(--accent-dark)}
+.wrap{max-width:1040px;margin:0 auto;padding:0 28px}
+header.top{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:baseline;padding:26px 0;border-bottom:1px solid var(--line)}
+.brand{font-size:26px;font-weight:600;color:var(--ink);text-decoration:none}
+nav.menu{display:flex;flex-wrap:wrap;gap:26px;font-size:20px}
+nav.menu a{color:var(--ink);text-decoration:none;padding:10px 0;transition:transform .25s ease;display:inline-block}
+nav.menu a:hover{transform:scale(1.2)}
+nav.menu a[aria-current]{color:var(--accent);border-bottom:2px solid var(--accent)}
+.hero{padding:70px 0 34px;display:flex;flex-direction:column;gap:18px}
+.kicker{font-family:var(--mono);font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+h1{margin:0;font-size:clamp(48px,8vw,92px);line-height:1;font-weight:600}
+h1 em{font-weight:500;color:var(--accent)}
+.lede{margin:0;font-size:24px;line-height:1.4;max-width:640px;color:#4A3A35}
+.filters{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:6px 0 26px}
+.filters button{min-height:44px;padding:0 20px;cursor:pointer;font-family:var(--serif);font-size:19px;font-weight:600;border-radius:22px;border:1px solid #B9A98F;background:transparent;color:var(--ink);transition:background .2s,color .2s}
+.filters button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.count{margin-left:auto;font-family:var(--mono);font-size:13px;color:var(--muted)}
+.month{margin:0;padding:34px 0 12px;font-family:var(--mono);font-size:14px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.show{display:flex;flex-wrap:wrap;gap:28px;align-items:center;padding:22px 0;border-top:1px solid var(--line);opacity:0;transform:translateY(12px);animation:rise .6s ease forwards}
+@keyframes rise{to{opacity:1;transform:none}}
+.day{width:96px;display:flex;flex-direction:column;gap:2px;font-family:var(--mono)}
+.day small{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.day b{font-size:44px;font-weight:500;line-height:1}
+.poster{width:96px;height:136px;flex:none;overflow:hidden;background:var(--accent);color:var(--ground);display:flex;flex-direction:column;justify-content:space-between;padding:10px;transition:transform .3s ease}
+.show:hover .poster{transform:scale(1.05) rotate(-1deg)}
+.poster img{width:96px;height:136px;object-fit:cover;margin:-10px;display:block}
+.poster span{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;opacity:.85}
+.poster i{font-size:17px;line-height:1.05}
+.info{flex:1 1 300px;min-width:0;display:flex;flex-direction:column;gap:6px}
+.info h3{margin:0;font-size:34px;line-height:1.05;font-weight:600;font-style:italic}
+.info h3 a{color:var(--ink);text-decoration:none}
+.info h3 a:hover{color:var(--accent)}
+.troupe{font-size:21px;color:#4A3A35}
+.lieu{font-size:21px}
+.dates{font-family:var(--mono);font-size:13px;color:var(--muted);white-space:pre-line}
+.more{display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:0 24px;background:var(--accent);color:#fff;text-decoration:none;font-size:20px;font-weight:600;border-radius:2px;transition:transform .25s ease,background .2s}
+.more:hover{color:#fff;background:var(--accent-dark);transform:scale(1.06)}
+.empty{margin:0;padding:40px 0;font-size:24px;font-style:italic;color:#4A3A35;border-top:1px solid var(--line)}
+.cta{margin:64px 0 0;padding:46px 40px;background:var(--ink);color:var(--ground);display:flex;flex-wrap:wrap;gap:26px;align-items:center;justify-content:space-between}
+.cta h2{margin:0;font-size:40px;line-height:1.05;font-weight:600}
+.cta p{margin:8px 0 0;font-size:22px;line-height:1.4;color:#E4D8C6}
+.cta a{display:inline-flex;align-items:center;min-height:52px;padding:0 28px;background:var(--ground);color:var(--ink);text-decoration:none;font-size:21px;font-weight:600;border-radius:2px;transition:transform .25s}
+.cta a:hover{transform:scale(1.06);color:var(--ink)}
+footer{padding:28px 0 40px;font-family:var(--mono);font-size:13px;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){.show{animation:none;opacity:1;transform:none}*{transition:none!important}}
+@media (max-width:560px){.wrap{padding:0 18px}.cta{padding:32px 22px}.count{margin-left:0;width:100%}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <a class="brand" href="https://lilianlloyd.com">lilian lloyd</a>
+  <nav class="menu" aria-label="Menu">
+    <a href="https://lilianlloyd.com/bio/">Bio</a>
+    <a href="https://lilianlloyd.com/repertoire/">Répertoire</a>
+    <a href="./" aria-current="page">Où voir du Lloyd ?</a>
+    <a href="https://lilianlloyd.com/contact/">Contact</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="kicker">À l'affiche</div>
+  <h1>Où voir <em>du Lloyd ?</em></h1>
+  <p class="lede">Toutes les dates à venir de mes pièces, partout où des troupes ont eu la bonne idée de les jouer.</p>
+</section>
+
+<div class="filters" id="filters" role="group" aria-label="Filtrer par région"></div>
+<main id="list" aria-live="polite"></main>
+
+<section class="cta">
+  <div>
+    <h2>Vous jouez une de mes pièces ?</h2>
+    <p>Annoncez vos dates en une minute. Elles paraîtront ici et dans ma lettre du mois.</p>
+  </div>
+  <a href="https://forms.gle/wZh7WLRrS3Dg1qb58" target="_blank" rel="noopener">Annoncer une date</a>
+</section>
+
+<footer>auteur de théâtre contemporain (pas encore mort)</footer>
+</div>
+
+<script>
+/* Adresse CSV de la feuille « Site » publiée sur le Web (Fichier > Partager > Publier sur le Web > Site > CSV) */
+const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSINs_olzTWMe09JpgLNiLZSbxkU394bXrmPSN5hGWwCF-V1P2yoJ7EjOm1dgxJjCYdMPg-tmnbZtVG/pub?gid=354293605&single=true&output=csv";
+
+const TINTS = ["#7A1F2B","#3D4A3A","#2F3E55","#6B4A1E","#4A2F4F","#1C1A1A"];
+const MOIS = ["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
+const JOURS = ["dim.","lun.","mar.","mer.","jeu.","ven.","sam."];
+/* Régions par numéro de département */
+const REGIONS = {
+  "Île-de-France":["75","77","78","91","92","93","94","95"],
+  "Nord et Est":["02","08","10","51","52","54","55","57","59","60","62","67","68","80","88"],
+  "Ouest":["14","22","27","29","35","44","49","50","53","56","61","72","76","85"],
+  "Centre et Bourgogne":["18","21","28","36","37","41","45","58","70","71","89","90","25","39"],
+  "Sud-Ouest":["09","11","12","16","17","19","23","24","31","32","33","40","46","47","64","65","79","81","82","86","87"],
+  "Sud-Est":["01","03","04","05","06","07","13","15","26","2A","2B","20","30","34","38","42","43","48","63","66","69","73","74","83","84"],
+  "Outre-mer et ailleurs":[]
+};
+
+function parseCSV(t){
+  const rows=[];let row=[],f="",q=false;
+  for(let i=0;i<t.length;i++){const c=t[i];
+    if(q){if(c==='"'){if(t[i+1]==='"'){f+='"';i++}else q=false}else f+=c}
+    else if(c==='"')q=true;else if(c===','){row.push(f);f=""}
+    else if(c==='\n'||c==='\r'){if(c==='\r'&&t[i+1]==='\n')i++;row.push(f);rows.push(row);row=[];f=""}
+    else f+=c}
+  if(f||row.length){row.push(f);rows.push(row)}
+  return rows.filter(r=>r.some(x=>x.trim()));
+}
+function parseDate(s){
+  s=(s||"").trim();let m=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+(\d{1,2}):(\d{2}))?/);
+  if(m)return {d:new Date(+m[3],+m[2]-1,+m[1],+(m[4]||0),+(m[5]||0)),heure:!!m[4]};
+  m=s.match(/^(\d{4})-(\d{2})-(\d{2})(?:[ T](\d{2}):(\d{2}))?/);
+  if(m)return {d:new Date(+m[1],+m[2]-1,+m[3],+(m[4]||0),+(m[5]||0)),heure:!!m[4]};
+  return null;
+}
+function heure(s){if(!s.heure)return "";const h=s.date.getHours(),mn=s.date.getMinutes();return h+" h"+(mn?" "+String(mn).padStart(2,"0"):"")}
+function dept(ville){
+  const m=(ville||"").match(/\b(2A|2B|97\d|\d{2})\b(?!.*\b(2A|2B|97\d|\d{2})\b)/i);
+  return m?m[1].toUpperCase():"";
+}
+function region(ville){
+  const d=dept(ville);
+  for(const [r,list] of Object.entries(REGIONS)) if(list.includes(d)) return r;
+  return "Outre-mer et ailleurs";
+}
+function driveId(url){const m=(url||"").match(/[?&]id=([\w-]+)|\/d\/([\w-]+)/);return m?(m[1]||m[2]):""}
+function hash(s){let h=0;for(const c of s)h=(h*31+c.charCodeAt(0))>>>0;return h}
+function el(tag,attrs,...kids){const e=document.createElement(tag);for(const k in attrs||{}){if(k==="text")e.textContent=attrs[k];else e.setAttribute(k,attrs[k])}kids.forEach(k=>k&&e.appendChild(k));return e}
+function safeUrl(u){try{const x=new URL(u.trim());return /^https?:$/.test(x.protocol)?x.href:""}catch(e){return ""}}
+
+let shows=[],current="Partout";
+
+function render(){
+  const list=document.getElementById("list");list.innerHTML="";
+  const shown=shows.filter(s=>current==="Partout"||s.region===current);
+  document.querySelector(".count").textContent=shown.length===0?"aucune date":(shown.length===1?"1 spectacle à venir":shown.length+" spectacles à venir");
+  if(!shown.length){list.appendChild(el("p",{class:"empty",text:"Rien dans ce coin-là pour l'instant. Il reste le train."}));return}
+  let last="";
+  shown.forEach((s,i)=>{
+    const mk=MOIS[s.date.getMonth()]+" "+s.date.getFullYear();
+    if(mk!==last){list.appendChild(el("h2",{class:"month",text:mk}));last=mk}
+    const art=el("article",{class:"show",style:"animation-delay:"+(i*70)+"ms"});
+    art.appendChild(el("div",{class:"day"},el("small",{text:JOURS[s.date.getDay()]}),el("b",{text:String(s.date.getDate())}),el("small",{text:heure(s)||MOIS[s.date.getMonth()].slice(0,4)+"."})));
+    const poster=el("div",{class:"poster",style:"background:"+TINTS[hash(s.piece)%TINTS.length]});
+    const fallback=()=>{poster.innerHTML="";poster.appendChild(el("span",{text:"Lilian Lloyd"}));poster.appendChild(el("i",{text:s.piece}))};
+    if(s.affiche){const img=el("img",{src:"https://drive.google.com/thumbnail?id="+s.affiche+"&sz=w400",alt:"Affiche de "+s.piece+" par "+s.troupe,loading:"lazy"});img.onerror=fallback;poster.appendChild(img)}else fallback();
+    art.appendChild(poster);
+    const info=el("div",{class:"info"});
+    info.appendChild(el("h3",{text:s.piece}));
+    info.appendChild(el("div",{class:"troupe",text:"par "+s.troupe}));
+    info.appendChild(el("div",{class:"lieu",text:s.salle+", "+s.ville}));
+    art.appendChild(info);
+    if(s.lien){const a=el("a",{class:"more",href:s.lien,target:"_blank",rel:"noopener",text:"Pour en savoir plus"});art.appendChild(a)}
+    list.appendChild(art);
+  });
+}
+function renderFilters(){
+  const box=document.getElementById("filters");box.innerHTML="";
+  const present=["Partout",...Object.keys(REGIONS).filter(r=>shows.some(s=>s.region===r))];
+  present.forEach(r=>{const b=el("button",{type:"button","aria-pressed":String(r===current),text:r});b.onclick=()=>{current=r;renderFilters();render()};box.appendChild(b)});
+  box.appendChild(el("div",{class:"count"}));
+}
+async function load(){
+  try{
+    const res=await fetch(CSV_URL+(CSV_URL.includes("?")?"&":"?")+"t="+Date.now());
+    const rows=parseCSV(await res.text()).slice(1);
+    const today=new Date();today.setHours(0,0,0,0);
+    const now=new Date();
+    shows=rows.map(r=>{const p=parseDate(r[4]);return {piece:(r[0]||"").trim(),troupe:(r[1]||"").trim(),salle:(r[2]||"").trim(),ville:(r[3]||"").trim(),date:p&&p.d,heure:p&&p.heure,lien:safeUrl(r[5]||""),affiche:driveId(r[6])}})
+      .filter(s=>s.piece&&s.date&&(s.heure?s.date>=now:s.date>=today))
+      .map(s=>Object.assign(s,{region:region(s.ville)}))
+      .sort((a,b)=>a.date-b.date);
+  }catch(e){shows=[]}
+  renderFilters();render();
+}
+load();
+</script>
+</body>
+</html>
