@@ -212,7 +212,7 @@ let shows=[],current="Partout";
 function render(){
   const list=document.getElementById("list");list.innerHTML="";
   const shown=shows.filter(s=>current==="Partout"||s.region===current);
-  document.querySelector(".count").textContent=shown.length===0?"aucune date":(shown.length===1?"1 spectacle à venir":shown.length+" spectacles à venir");
+  document.querySelector(".count").textContent=shown.length===0?"aucune date":(shown.length===1?"1 représentation à venir":shown.length+" représentations à venir");
   if(!shown.length){list.appendChild(el("p",{class:"empty",text:"Rien dans ce coin-là pour l'instant. Il reste le train."}));return}
   let last="";
   shown.forEach((s,i)=>{
