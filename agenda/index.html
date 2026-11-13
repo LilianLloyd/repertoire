@@ -132,10 +132,16 @@ function parseDate(s){
   if(m)return {d:new Date(+m[3],+m[2]-1,+m[1],+(m[4]||0),+(m[5]||0)),heure:!!m[4]};
   m=s.match(/^(\d{4})-(\d{2})-(\d{2})(?:[ T](\d{2}):(\d{2}))?/);
   if(m)return {d:new Date(+m[1],+m[2]-1,+m[3],+(m[4]||0),+(m[5]||0)),heure:!!m[4]};
+  /* Numéro de série Google Sheets (ex. 46347,63542) */
+  m=s.match(/^(\d{5})(?:[.,](\d+))?$/);
+  if(m){const u=new Date(Date.UTC(1899,11,30)+Math.round(parseFloat(m[1]+"."+(m[2]||"0"))*1440)*60000);
+    return {d:new Date(u.getUTCFullYear(),u.getUTCMonth(),u.getUTCDate(),u.getUTCHours(),u.getUTCMinutes()),heure:!!m[2]&&+m[2]>0};}
   return null;
 }
 function heure(s){if(!s.heure)return "";const h=s.date.getHours(),mn=s.date.getMinutes();return h+" h"+(mn?" "+String(mn).padStart(2,"0"):"")}
 function dept(ville){
+  const cp=(ville||"").match(/\b(\d{5})\b/);
+  if(cp){const c=cp[1];return c.startsWith("97")?c.slice(0,3):c.startsWith("20")?"20":c.slice(0,2)}
   const m=(ville||"").match(/\b(2A|2B|97\d|\d{2})\b(?!.*\b(2A|2B|97\d|\d{2})\b)/i);
   return m?m[1].toUpperCase():"";
 }
@@ -172,6 +178,7 @@ function render(){
     info.appendChild(el("div",{class:"lieu",text:s.salle+", "+s.ville}));
     art.appendChild(info);
     if(s.lien){const a=el("a",{class:"more",href:s.lien,target:"_blank",rel:"noopener",text:"Pour en savoir plus"});art.appendChild(a)}
+    else if(s.tel){const a=el("a",{class:"more",href:"tel:"+s.tel.replace(/\D/g,""),text:s.tel});art.appendChild(a)}
     list.appendChild(art);
   });
 }
@@ -187,7 +194,7 @@ async function load(){
     const rows=parseCSV(await res.text()).slice(1);
     const today=new Date();today.setHours(0,0,0,0);
     const now=new Date();
-    shows=rows.map(r=>{const p=parseDate(r[4]);return {piece:(r[0]||"").trim(),troupe:(r[1]||"").trim(),salle:(r[2]||"").trim(),ville:(r[3]||"").trim(),date:p&&p.d,heure:p&&p.heure,lien:safeUrl(r[5]||""),affiche:driveId(r[6])}})
+    shows=rows.map(r=>{const p=parseDate(r[4]);return {piece:(r[0]||"").trim(),troupe:(r[1]||"").trim(),salle:(r[2]||"").trim(),ville:(r[3]||"").trim(),date:p&&p.d,heure:p&&p.heure,lien:safeUrl(r[5]||""),tel:(((r[5]||"").match(/\b0[1-9](?:[ .]?\d{2}){4}\b/)||[""])[0]),affiche:driveId(r[6])}})
       .filter(s=>s.piece&&s.date&&(s.heure?s.date>=now:s.date>=today))
       .map(s=>Object.assign(s,{region:region(s.ville)}))
       .sort((a,b)=>a.date-b.date);
